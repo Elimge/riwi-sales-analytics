@@ -1,0 +1,24 @@
+# Python & Environment
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints
+
+# Data (Nunca subir el CSV de 1M de filas)
+data/
+*.csv
+*.xlsx
+
+# Power BI
+*.pbix
+*.pbix.user
+*.pbip.user
+.pbi/localSettings.json
+.pbi/cache/
+
+# IDE
+.vscode/
