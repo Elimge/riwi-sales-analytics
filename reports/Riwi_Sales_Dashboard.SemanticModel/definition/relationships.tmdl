@@ -1,0 +1,26 @@
+relationship AutoDetected_11434355-8f77-4662-8698-7d8644631d80
+	fromColumn: Fact_Sales.ID_Producto
+	toColumn: Dim_Product.ID_Producto
+
+relationship AutoDetected_73a1ec67-6a03-4a9a-94e2-8c7107951698
+	fromColumn: Fact_Sales.ID_Cliente
+	toColumn: Dim_Client.ID_Cliente
+
+relationship AutoDetected_d92adfa0-94f2-4c57-9abe-c85717f83c12
+	fromColumn: Fact_Sales.ID_Geo
+	toColumn: Dim_Geography.ID_Geo
+
+relationship 4256958f-29e8-4bc8-abc4-db05145b22e2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Dim_Calendar.Date
+	toColumn: LocalDateTable_4b9d3b56-67c6-4470-a664-019d23b6fbc7.Date
+
+relationship a27e7bd1-d7bc-415a-4661-2c05d13a7fec
+	fromColumn: Fact_Sales.Fecha
+	toColumn: Dim_Calendar.Date
+
+relationship 867f7ebe-1e0c-42bf-aafd-ed1641425e28
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Dim_Calendar.'Week Start'
+	toColumn: LocalDateTable_247034ad-5f6a-42a9-8694-8bf08347dad9.Date
+

@@ -1,0 +1,94 @@
+table Dim_Calendar
+	lineageTag: 158e3e09-58ff-4a62-8531-b871bc181ae1
+
+	column Date
+		formatString: General Date
+		lineageTag: 3d3cc969-5054-47d5-8afb-212f4dd172ff
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variación
+			isDefault
+			relationship: 4256958f-29e8-4bc8-abc4-db05145b22e2
+			defaultHierarchy: LocalDateTable_4b9d3b56-67c6-4470-a664-019d23b6fbc7.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 28ec5023-e42d-4621-81c5-a1a0dd80960e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month No'
+		formatString: 0
+		lineageTag: ac8ddf62-162a-406a-b881-500a115e7da3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month No]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		lineageTag: a5ffe0b3-ec8a-4fbd-bd30-c3cd5f2e9dab
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Name]
+		sortByColumn: 'Month No'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year-Month
+		lineageTag: 20270a51-3b0e-45da-88e6-be10ec62083b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year-Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Start'
+		formatString: General Date
+		lineageTag: 8273e06b-ff17-4b2d-b181-4f3123243b5c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Week Start]
+
+		variation Variación
+			isDefault
+			relationship: 867f7ebe-1e0c-42bf-aafd-ed1641425e28
+			defaultHierarchy: LocalDateTable_247034ad-5f6a-42a9-8694-8bf08347dad9.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Num'
+		formatString: 0
+		lineageTag: a717de13-c321-405d-9edc-07bbcfa07458
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Week Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Calendar = calculated
+		mode: import
+		source =
+				
+				VAR MinDate = MIN(Fact_Sales[Fecha])
+				VAR MaxDate = MAX(Fact_Sales[Fecha])
+				RETURN
+				ADDCOLUMNS (
+				    CALENDAR (MinDate, MaxDate),
+				    "Year", YEAR([Date]),
+				    "Month No", MONTH([Date]),
+				    "Month Name", FORMAT([Date], "MMMM"),
+				    "Year-Month", FORMAT([Date], "YYYY-MM"),
+				    "Week Start", [Date] - WEEKDAY([Date], 2) + 1,  -- Since monday
+				    "Week Num", WEEKNUM([Date], 2)
+				)
+
+	annotation PBI_Id = 672f20b0214a49c7abd8d800c2c44e81
+

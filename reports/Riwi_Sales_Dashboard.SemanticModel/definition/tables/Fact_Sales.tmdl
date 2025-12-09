@@ -1,0 +1,121 @@
+table Fact_Sales
+	lineageTag: 49261194-671f-4e92-b504-0e4049e4a88b
+
+	column ID_Producto
+		dataType: int64
+		formatString: 0
+		lineageTag: 525c3e9c-6d93-412f-a521-76e9e78c7b5e
+		summarizeBy: none
+		sourceColumn: ID_Producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column ID_Cliente
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d2de5cf-d77e-4151-bc3c-6e65132b251f
+		summarizeBy: none
+		sourceColumn: ID_Cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column ID_Geo
+		dataType: int64
+		formatString: 0
+		lineageTag: f9364304-a062-440f-93cb-3f37da18bd88
+		summarizeBy: none
+		sourceColumn: ID_Geo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fecha
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b1a3d47d-d150-4197-826d-8c883f6aa92f
+		summarizeBy: none
+		sourceColumn: Fecha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Cantidad
+		dataType: double
+		lineageTag: 901ae14f-2571-44de-803f-29e5168a6612
+		summarizeBy: sum
+		sourceColumn: Cantidad
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Precio_Unitario
+		dataType: double
+		lineageTag: 18d734a5-36e7-4a32-9bc6-ef2766dcd5ad
+		summarizeBy: sum
+		sourceColumn: Precio_Unitario
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Tipo_Venta
+		dataType: string
+		lineageTag: c086ff50-5850-4478-8064-73ea97d3970d
+		summarizeBy: none
+		sourceColumn: Tipo_Venta
+
+		annotation SummarizationSetBy = Automatic
+
+	column Descuento
+		dataType: double
+		lineageTag: 9574e005-35b9-4073-8fe2-9edd62d33cca
+		summarizeBy: sum
+		sourceColumn: Descuento
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Costo_Envio
+		dataType: double
+		lineageTag: 2d26705d-047b-47d7-89ba-48476a3d84ce
+		summarizeBy: sum
+		sourceColumn: Costo_Envio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Total
+		dataType: double
+		lineageTag: f8f29ae1-bb3c-4261-9ab4-30f0d32885e7
+		summarizeBy: sum
+		sourceColumn: Total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fact_Sales = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "riwi_ventas_db"),
+				    public_clean_sales = Origen{[Schema="public",Item="clean_sales"]}[Data],
+				    #"Tipo cambiado" = Table.TransformColumnTypes(public_clean_sales,{{"Fecha", type date}}),
+				    #"Consultas combinadas" = Table.NestedJoin(#"Tipo cambiado", {"Producto"}, Dim_Product, {"Producto"}, "Dim_Product", JoinKind.LeftOuter),
+				    #"Se expandió Dim_Product" = Table.ExpandTableColumn(#"Consultas combinadas", "Dim_Product", {"ID_Producto"}, {"ID_Producto"}),
+				    #"Consultas combinadas1" = Table.NestedJoin(#"Se expandió Dim_Product", {"Tipo_Cliente"}, Dim_Client, {"Tipo_Cliente"}, "Dim_Client", JoinKind.LeftOuter),
+				    #"Se expandió Dim_Client" = Table.ExpandTableColumn(#"Consultas combinadas1", "Dim_Client", {"ID_Cliente"}, {"ID_Cliente"}),
+				    #"Consultas combinadas2" = Table.NestedJoin(#"Se expandió Dim_Client", {"Ciudad", "Pais"}, Dim_Geography, {"Ciudad", "Pais"}, "Dim_Geography", JoinKind.LeftOuter),
+				    #"Se expandió Dim_Geography" = Table.ExpandTableColumn(#"Consultas combinadas2", "Dim_Geography", {"ID_Geo"}, {"ID_Geo"}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Se expandió Dim_Geography",{"Ciudad", "Producto", "Tipo_Producto", "Tipo_Cliente", "Pais"}),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Columnas quitadas",{"ID_Producto", "ID_Cliente", "ID_Geo", "Fecha", "Cantidad", "Precio_Unitario", "Tipo_Venta", "Descuento", "Costo_Envio", "Total"})
+				in
+				    #"Columnas reordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

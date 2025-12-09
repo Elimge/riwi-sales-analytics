@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Riwi_Sales_Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5693c7f2-38f7-4b8f-97ec-7874d65962ae"
+  }
+}

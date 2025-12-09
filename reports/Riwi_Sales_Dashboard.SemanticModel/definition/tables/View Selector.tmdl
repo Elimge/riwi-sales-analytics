@@ -1,0 +1,49 @@
+table 'View Selector'
+	lineageTag: 13947922-8395-477d-a270-51fc7fc3981e
+
+	column 'View Selector'
+		lineageTag: a1e8c91b-32e0-4793-a691-18a5253fa04c
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'View Selector Orden'
+
+		relatedColumnDetails
+			groupByColumn: 'View Selector Campos'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'View Selector Campos'
+		isHidden
+		lineageTag: 5c42ac74-1793-49aa-a439-f768a73f503b
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'View Selector Orden'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'View Selector Orden'
+		isHidden
+		formatString: 0
+		lineageTag: ec277947-f0d0-45eb-a762-357ea874aafe
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'View Selector' = calculated
+		mode: import
+		source =
+				{
+				    ("Pais", NAMEOF('Dim_Geography'[Pais]), 0),
+				    ("Tipo_Cliente", NAMEOF('Dim_Client'[Tipo_Cliente]), 1),
+				    ("Tipo_Producto", NAMEOF('Dim_Product'[Tipo_Producto]), 2)
+				}
+
+	annotation PBI_Id = be6b7ca2418b43cd9052a2a7f7fa240c
+

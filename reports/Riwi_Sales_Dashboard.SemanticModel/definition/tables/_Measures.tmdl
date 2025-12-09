@@ -1,0 +1,43 @@
+table _Measures
+	lineageTag: be7bdb9a-c1f4-4683-adf0-fd4289490d6b
+
+	measure 'Total Revenue' = SUM(Fact_Sales[Total])
+		lineageTag: dc2c6149-ba0c-4181-b37a-d990e2f0ca3f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Transactions' = COUNTROWS(Fact_Sales)
+		formatString: 0
+		lineageTag: 9ce8f1dd-906b-4945-9a03-4787e6c7ccea
+
+	measure 'Avg Ticket' = DIVIDE([Total Revenue], [Total Transactions], 0)
+		lineageTag: bfa790d8-e627-4cc6-9a81-d0fd3580ad46
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'PM Sales' = CALCULATE([Total Revenue], DATEADD(Dim_Calendar[Date], -1, MONTH))
+		lineageTag: 6b4e3217-de95-4927-9b91-5f3e0483eab1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MoM Growth %' =
+			
+			VAR CurrentSales = [Total Revenue]
+			VAR PrevSales = [PM Sales]
+			RETURN
+			    DIVIDE(CurrentSales - PrevSales, PrevSales, 0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: cd6c49cc-5519-4b70-89cf-35066467f544
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Columna1 = _t]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"Columna1", type text}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"Columna1"})
+				in
+				    #"Columnas quitadas"
+
+	annotation PBI_ResultType = Table
+

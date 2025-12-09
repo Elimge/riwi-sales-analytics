@@ -1,0 +1,39 @@
+table Dim_Client
+	lineageTag: f2a33f47-0eff-4d59-b1fe-13f005d8e0e6
+
+	column ID_Cliente
+		dataType: int64
+		formatString: 0
+		lineageTag: c8a3ee95-0c49-4b60-81d8-06f330f0dd41
+		summarizeBy: none
+		sourceColumn: ID_Cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tipo_Cliente
+		dataType: string
+		lineageTag: 9b805c7a-9d03-41b4-907c-e255f0ee3488
+		summarizeBy: none
+		sourceColumn: Tipo_Cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Client = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "riwi_ventas_db"),
+				    public_clean_sales = Origen{[Schema="public",Item="clean_sales"]}[Data],
+				    #"Tipo cambiado" = Table.TransformColumnTypes(public_clean_sales,{{"Fecha", type date}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Tipo cambiado",{"Tipo_Cliente"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Otras columnas quitadas"),
+				    #"Índice agregado" = Table.AddIndexColumn(#"Duplicados quitados", "Índice", 1, 1, Int64.Type),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Índice agregado",{{"Índice", "ID_Cliente"}}),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Columnas con nombre cambiado",{"ID_Cliente", "Tipo_Cliente"})
+				in
+				    #"Columnas reordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

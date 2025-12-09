@@ -1,0 +1,47 @@
+table Dim_Product
+	lineageTag: 41df1d4d-7346-4fa8-af55-04b9add22045
+
+	column ID_Producto
+		dataType: int64
+		formatString: 0
+		lineageTag: 09d91c54-6f6e-4da3-86c6-ccfd74d25541
+		summarizeBy: none
+		sourceColumn: ID_Producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Producto
+		dataType: string
+		lineageTag: 40f8de3c-8e04-4e3e-abb2-15bb0950218a
+		summarizeBy: none
+		sourceColumn: Producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tipo_Producto
+		dataType: string
+		lineageTag: 943fce81-a845-4377-98c3-5407de456d65
+		summarizeBy: none
+		sourceColumn: Tipo_Producto
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Product = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "riwi_ventas_db"),
+				    public_clean_sales = Origen{[Schema="public",Item="clean_sales"]}[Data],
+				    #"Tipo cambiado" = Table.TransformColumnTypes(public_clean_sales,{{"Fecha", type date}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Tipo cambiado",{"Producto", "Tipo_Producto"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Otras columnas quitadas"),
+				    #"Índice agregado" = Table.AddIndexColumn(#"Duplicados quitados", "Índice", 1, 1, Int64.Type),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Índice agregado",{{"Índice", "ID_Producto"}}),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Columnas con nombre cambiado",{"ID_Producto", "Producto", "Tipo_Producto"})
+				in
+				    #"Columnas reordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

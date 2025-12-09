@@ -1,0 +1,47 @@
+table Dim_Geography
+	lineageTag: 6df80262-bb10-4d87-987e-70a8bd93b4da
+
+	column ID_Geo
+		dataType: int64
+		formatString: 0
+		lineageTag: 56373b76-dbed-4b99-904c-954ac5d8da21
+		summarizeBy: none
+		sourceColumn: ID_Geo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ciudad
+		dataType: string
+		lineageTag: 6481fc92-23b2-4ff4-9811-ce1496a1ae22
+		summarizeBy: none
+		sourceColumn: Ciudad
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pais
+		dataType: string
+		lineageTag: 615200cf-26ee-40eb-ab72-deae838e3772
+		summarizeBy: none
+		sourceColumn: Pais
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Geography = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "riwi_ventas_db"),
+				    public_clean_sales = Origen{[Schema="public",Item="clean_sales"]}[Data],
+				    #"Tipo cambiado" = Table.TransformColumnTypes(public_clean_sales,{{"Fecha", type date}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Tipo cambiado",{"Ciudad", "Pais"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Otras columnas quitadas"),
+				    #"Índice agregado" = Table.AddIndexColumn(#"Duplicados quitados", "Índice", 1, 1, Int64.Type),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Índice agregado",{{"Índice", "ID_Geo"}}),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Columnas con nombre cambiado",{"ID_Geo", "Ciudad", "Pais"})
+				in
+				    #"Columnas reordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
