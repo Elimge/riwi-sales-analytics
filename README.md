@@ -21,6 +21,7 @@ The solution follows a modern **ELT (Extract, Load, Transform)** and **BI** pipe
     *   **Regex** cleaning for special characters.
     *   **Geospatial Mapping** (City $\to$ Country) to fix map visualization issues.
     *   **Logical Fixes** for inconsistent product categories.
+    *   **Data Integrity Gate:** Mathematical audit to filter out inconsistent transactions (~2% of data).
 3.  **Storage (PostgreSQL):** Data warehousing in a local PostgreSQL instance (`clean_sales`).
 4.  **Modeling (Power BI):** Transformation into a **Star Schema** using Power Query.
 5.  **Visualization:** Interactive Dashboard with DAX measures and field parameters.

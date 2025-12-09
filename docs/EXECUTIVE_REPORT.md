@@ -6,9 +6,9 @@
 ---
 
 ## 1. Executive Summary
-The sales performance for the analyzed period (Q4 2025) demonstrates a robust market presence with a **Total Revenue of $18.32 Billion** across 7 international markets. 
+The sales performance for the analyzed period (Q4 2025) demonstrates a robust market presence with a **Total Revenue of $15.59 Billion** across 7 international markets. 
 
-We observed a significant **Month-over-Month (MoM) growth of +30.08%**, driven largely by a surge in transaction volume in mid-November. While the product portfolio performs consistently, high volatility in daily sales suggests a dependency on large-volume B2B (Corporate/Government) transactions rather than steady retail flow.
+We observed a significant **Month-over-Month (MoM) growth of +30.46%**, driven largely by a surge in transaction volume in mid-November. While the product portfolio performs consistently, high volatility in daily sales suggests a dependency on large-volume B2B (Corporate/Government) transactions rather than steady retail flow.
 
 ---
 
@@ -16,12 +16,12 @@ We observed a significant **Month-over-Month (MoM) growth of +30.08%**, driven l
 
 | Metric | Value | Context |
 | :--- | :--- | :--- |
-| **Total Revenue** | **$15.59 B** | Solid performance after auditing mathematical integrity. |
+| **Total Revenue** | **$15.59 B** | Solid performance after auditing mathematical integrity.* |
 | **Transactions** | **900,000** | High volume across 7 markets. |
 | **Avg. Ticket** | **$17,330** | Optimized metric after removing outliers. |
 | **Growth (MoM)** | **+30.46%** | Consistent seasonal surge in late November. |
 
-> **Strategic View:** The positive growth rate indicates effective end-of-year seasonal demand. However, the gap between the Average Ticket ($17k) and the high standard deviation observed in analysis suggests revenue stability risks.
+> ***Data Quality Note:** Revenue figures exclude ~2% of transactions flagged as mathematical anomalies (where Unit Price * Quantity did not match Total), ensuring strict financial accuracy for decision-making.*
 
 ---
 
@@ -52,7 +52,7 @@ Revenue is distributed with remarkable uniformity across **USA, Argentina, Chile
 ### Top Performers
 The product mix is balanced, with **Dairy (Lácteos)** and **Beverages (Bebidas)** leading the category share.
 
-*   **Top Products:** Cafe, Pan, Queso, Leche, and Arepa remain the most consistent revenue drivers.
+*   **Top Products:** Café, Pan, Leche, Queso, and Arepa remain the most consistent revenue drivers.
 *   **Customer Segments:** Corporate and Government clients show similar spending magnitudes to Retail, but with much lower frequency and higher volume per transaction.
 
 ![Product Analysis](../docs/images/dashboard_bars_detail.png)
