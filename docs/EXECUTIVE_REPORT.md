@@ -52,7 +52,7 @@ Revenue is distributed with remarkable uniformity across **USA, Argentina, Chile
 ### Top Performers
 The product mix is balanced, with **Dairy (Lácteos)** and **Beverages (Bebidas)** leading the category share.
 
-*   **Top Products:** Queso, Yogurt, and Chocolate remain the most consistent revenue drivers.
+*   **Top Products:** Cafe, Pan, Queso, Leche, and Arepa remain the most consistent revenue drivers.
 *   **Customer Segments:** Corporate and Government clients show similar spending magnitudes to Retail, but with much lower frequency and higher volume per transaction.
 
 ![Product Analysis](../docs/images/dashboard_bars_detail.png)
