@@ -16,12 +16,12 @@ We observed a significant **Month-over-Month (MoM) growth of +30.08%**, driven l
 
 | Metric | Value | Context |
 | :--- | :--- | :--- |
-| **Total Revenue** | **$18.32 B** | Strong overall performance across all regions. |
-| **Transactions** | **919,000** | High volume indicates successful market penetration. |
-| **Avg. Ticket** | **$19,930** | High average ticket suggests strong B2B component. |
-| **Growth (MoM)** | **+30.08%** | Significant increase in activity from Nov to Dec. |
+| **Total Revenue** | **$15.59 B** | Solid performance after auditing mathematical integrity. |
+| **Transactions** | **900,000** | High volume across 7 markets. |
+| **Avg. Ticket** | **$17,330** | Optimized metric after removing outliers. |
+| **Growth (MoM)** | **+30.46%** | Consistent seasonal surge in late November. |
 
-> **Strategic View:** The positive growth rate indicates effective end-of-year seasonal demand. However, the gap between the Average Ticket ($19k) and the high standard deviation observed in analysis suggests revenue stability risks.
+> **Strategic View:** The positive growth rate indicates effective end-of-year seasonal demand. However, the gap between the Average Ticket ($17k) and the high standard deviation observed in analysis suggests revenue stability risks.
 
 ---
 
